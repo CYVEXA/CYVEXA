@@ -1,1 +1,1 @@
-web: gunicorn cyvexa.wsgi
+web: gunicorn backend.wsgi:application
