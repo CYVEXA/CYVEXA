@@ -15,9 +15,6 @@ STATIC_URL = '/static/'
 
 import os
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://your-app-name.onrender.com",
-]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -36,7 +33,8 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://cyvexa-project-production.up.railway.app"
+    "https://cyvexa.onrender.com",
+    "https://cyvexa-project-production.up.railway.app",
 ]
 
 # Application definition
