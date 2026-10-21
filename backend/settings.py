@@ -35,6 +35,7 @@ ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = [
     "https://cyvexa.onrender.com",
     "https://cyvexa-project-production.up.railway.app",
+    "https://your-app-name.onrender.com",
 ]
 
 # Application definition
