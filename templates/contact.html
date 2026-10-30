@@ -108,7 +108,7 @@ header {
 
     align-items: center;
 
-    padding: 10px 0;
+    padding: 25px 0;
 
 }
 
@@ -130,9 +130,9 @@ header {
 
 .logo-wrapper img {
 
-    width: 70px;
+    width: 80px;
 
-    height: 70px;
+    height: 80px;
 
     object-fit: contain;
 
@@ -470,70 +470,35 @@ nav a:hover {
 
 
 /* =========================================================
-   INTEREST OPTIONS
+   SERVICE DROPDOWN
 ========================================================= */
 
-.interest-options {
-
-    display: grid;
-
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 12px;
-
-}
-
-
-/* OPTION */
-
-.interest-option {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-
-    padding: 13px 15px;
-
-    border: 1px solid rgba(255,255,255,0.10);
-
+.form-group select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid rgba(255,255,255,0.12);
     border-radius: 10px;
-
-    cursor: pointer;
-
-    color: #bdbdbd;
-
-    background: rgba(255,255,255,0.015);
-
-    transition: 0.3s ease;
-
-}
-
-
-.interest-option:hover {
-
-    border-color: rgba(255,255,255,0.35);
-
+    background: rgba(255,255,255,0.03);
     color: #ffffff;
-
-    background: rgba(255,255,255,0.04);
-
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.3s ease, background 0.3s ease;
 }
 
+.form-group select:focus {
+    border-color: rgba(255,255,255,0.45);
+    background: rgba(255,255,255,0.05);
+}
 
-/* CHECKBOX */
+.form-group select:invalid {
+    color: #8a8a8a;
+}
 
-.interest-option input {
-
-    width: 17px;
-
-    height: 17px;
-
-    cursor: pointer;
-
-    accent-color: #ffffff;
-
+.form-group select option {
+    background: #111111;
+    color: #ffffff;
 }
 
 
@@ -1236,121 +1201,34 @@ footer {
 
 
                 <!-- =====================================
-                     INTEREST
+                     SERVICE REQUIRED
                 ====================================== -->
 
                 <div class="form-group full">
 
-                    <label>
-
-                        Interested In
+                    <label for="interest">
+                        Service Required
                         <span>*</span>
-
                     </label>
 
-
-                    <div class="interest-options">
-
-
-                        <!-- WEB VAPT -->
-
-                        <label class="interest-option">
-
-                            <input
-                                type="checkbox"
-                                name="interest"
-                                value="Web VAPT"
-                            >
-
-                            <span>
-                                Web VAPT
-                            </span>
-
-                        </label>
-
-
-
-                        <!-- SECURE WEBSITE -->
-
-                        <label class="interest-option">
-
-                            <input
-                                type="checkbox"
-                                name="interest"
-                                value="Secure Website Development"
-                            >
-
-                            <span>
-                                Secure Website Development
-                            </span>
-
-                        </label>
-
-
-
-                        <!-- WEBSITE SECURITY -->
-
-                        <label class="interest-option">
-
-                            <input
-                                type="checkbox"
-                                name="interest"
-                                value="Website Security & AMC"
-                            >
-
-                            <span>
-                                Website Security & AMC
-                            </span>
-
-                        </label>
-
-
-
-                        <!-- PRODUCTS -->
-
-                        <label class="interest-option">
-
-                            <input
-                                type="checkbox"
-                                name="interest"
-                                value="Products / Demo"
-                            >
-
-                            <span>
-                                Products / Demo
-                            </span>
-
-                        </label>
-
-
-
-                        <!-- OTHER -->
-
-                        <label class="interest-option">
-
-                            <input
-                                type="checkbox"
-                                name="interest"
-                                value="Other"
-                            >
-
-                            <span>
-                                Other
-                            </span>
-
-                        </label>
-
-
-                    </div>
+                    <select id="interest" name="interest" required>
+                        <option value="" selected disabled>Select a service</option>
+                        <option value="Web VAPT">Web VAPT</option>
+                        <option value="Secure Website Development">Secure Website Development</option>
+                        <option value="Website Security & AMC">Website Security &amp; AMC</option>
+                        <option value="Website Maintenance">Website Maintenance</option>
+                        <option value="UI/UX Design">UI/UX Design</option>
+                        <option value="Logo Design & Brand Identity">Logo Design &amp; Brand Identity</option>
+                        <option value="Technical Training / Cybersecurity Education">Technical Training / Cybersecurity Education</option>
+                        <option value="Products / Demo">Products / Demo</option>
+                        <option value="Other">Other</option>
+                    </select>
 
                 </div>
 
 
 
-                <!-- =====================================
-                     DESCRIPTION
-                ====================================== -->
-
+                     
                 <div class="form-group full">
 
                     <label for="description">
@@ -1585,40 +1463,16 @@ document
 
 
         /* ==========================================
-           GET SELECTED SERVICES
+           GET AND VALIDATE SELECTED SERVICE
         ========================================== */
 
-        const selectedInterests = [];
+        const selectedInterest =
+            document.getElementById("interest").value;
 
-
-        document
-            .querySelectorAll(
-                'input[name="interest"]:checked'
-            )
-            .forEach(function(checkbox) {
-
-                selectedInterests.push(
-                    checkbox.value
-                );
-
-            });
-
-
-
-        /* ==========================================
-           VALIDATE SERVICE
-        ========================================== */
-
-        if (
-            selectedInterests.length === 0
-        ) {
-
-            alert(
-                "Please select at least one service you are interested in."
-            );
-
+        if (!selectedInterest) {
+            alert("Please select a service required.");
+            document.getElementById("interest").focus();
             return;
-
         }
 
 
@@ -1646,7 +1500,7 @@ ${phone || "Not provided"}
 ${organization || "Not provided"}
 
 *Interested In:*
-${selectedInterests.join(", ")}
+${selectedInterest}
 
 *Project / Requirement:*
 ${description}

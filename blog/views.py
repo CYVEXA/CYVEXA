@@ -125,20 +125,42 @@ def delete_blog(request, id):
     return render(request, 'delete_confirm.html', {'blog': blog})
 
 
+from django.db.models import Q
+
 # =========================
 # 📅 EVENTS (PUBLIC VIEW)
 # =========================
 def event_list(request):
     today = timezone.now().date()
 
-    upcoming_events = Event.objects.filter(start_date__gt=today)
-    ongoing_events = Event.objects.filter(start_date__lte=today, end_date__gte=today)
-    completed_events = Event.objects.filter(end_date__lt=today)
+    # Query all events, newest/upcoming first
+    events = Event.objects.all().order_by('-start_date')
+
+    upcoming_events = Event.objects.filter(start_date__gt=today).order_by('start_date')
+    ongoing_events = Event.objects.filter(
+        Q(start_date__lte=today, end_date__gte=today) |
+        Q(start_date=today, end_date__isnull=True)
+    ).order_by('start_date')
+    completed_events = Event.objects.filter(
+        Q(end_date__lt=today) |
+        Q(end_date__isnull=True, start_date__lt=today)
+    ).order_by('-start_date')
+
+    # Ordered unified list: ongoing, then upcoming, then completed
+    ordered_events = list(ongoing_events) + list(upcoming_events) + list(completed_events)
+    # If no categorized difference, fallback to all events
+    if not ordered_events and events.exists():
+        ordered_events = list(events)
 
     return render(request, 'events.html', {
+        'events': ordered_events,
         'upcoming_events': upcoming_events,
         'ongoing_events': ongoing_events,
         'completed_events': completed_events,
+        'total_count': events.count(),
+        'upcoming_count': upcoming_events.count(),
+        'ongoing_count': ongoing_events.count(),
+        'completed_count': completed_events.count(),
     })
 
 
